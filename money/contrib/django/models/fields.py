@@ -121,10 +121,15 @@ class MoneyField(models.DecimalField):
             value = value.amount
         return super(MoneyField, self).get_db_prep_save(value, connection, *args, **kwargs)
 
+    def get_prep_value(self, value):
+        if isinstance(value, Money):
+            value = value.amount
+        return value
+
     def get_prep_lookup(self, lookup_type, value):
         if not lookup_type in SUPPORTED_LOOKUPS:
             raise NotSupportedLookup(lookup_type)
-        value = self.get_db_prep_save(value)
+        value = self.get_prep_value(value)
         return super(MoneyField, self).get_prep_lookup(lookup_type, value)
 
     def get_default(self):
