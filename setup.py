@@ -45,9 +45,6 @@ for dirpath, dirnames, filenames in os.walk(start_dir):
     elif filenames:
         data_files.append([dirpath, [os.path.join(dirpath, f) for f in filenames]])
 
-with open(os.path.join(loc, 'README.md')) as f:
-    README = f.read()
-
 keywords = 'money currency finance'.split()
 
 tests_require = [
