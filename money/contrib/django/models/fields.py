@@ -131,7 +131,9 @@ class MoneyField(InfiniteDecimalField):
         # a wobbly.
         if isinstance(value, Money):
             value = value.amount
-        return super(MoneyField, self).get_db_prep_save(value, connection, *args, **kwargs)
+
+        # override DecimalField's rounding
+        return self.get_db_prep_value(value, connection=connection, prepared=False)
 
     def get_prep_lookup(self, lookup_type, value):
         if not lookup_type in SUPPORTED_LOOKUPS:
